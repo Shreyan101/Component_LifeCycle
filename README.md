@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+### React Lifecycle Methods: componentWillUnmount Demonstration
+## Overview
+## This web application demonstrates the importance and proper usage of the componentWillUnmount lifecycle method in React. It uses a simple timer example to show how to clean up resources such as intervals to prevent memory leaks and unwanted background processes.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Features
+## Initialization: Demonstrates how to start an interval in componentDidMount.
+## Cleanup: Shows how to properly clean up the interval in componentWillUnmount.
+## User Interaction: Allows users to navigate between pages to observe the effects of proper and improper cleanup.
+## How It Works
+## Home Component
+The Home component starts an interval when it mounts and increments a timer every second. The interval is intended to be cleared in the componentWillUnmount method, but initially, this cleanup is commented out to demonstrate the consequences.
 
-## Available Scripts
+## LifeCycle Component
+The LifeCycle component explains what happens when the interval is not cleared and provides instructions to users on how to fix the issue by uncommenting the clearInterval line in the componentWillUnmount method.
 
-In the project directory, you can run:
+## Code Example
+## Home Component
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+import React from 'react';
+import '../index.css';
+import { Link } from 'react-router-dom';
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+class Home extends React.Component {
+  constructor() {
+    super();
+    console.log('Constructor Called Parent (Home)');
+    this.state = {
+      timer: 0,
+    };
+  }
 
-### `npm test`
+  componentDidMount() {
+    console.log('ComponentDidMount Called');
+    this.interval = setInterval(() => {
+      console.log('setInterval called ---> costly operation');
+      this.setState((prevState) => ({
+        timer: prevState.timer + 1,
+      }));
+    }, 1000);
+  }
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  componentWillUnmount() {
+    console.log('componentWillUnmount called');
+    // Uncomment the line below to clear the interval and prevent memory leaks
+    // clearInterval(this.interval);
+  }
 
-### `npm run build`
+  render() {
+    console.log(this.state.timer);
+    return (
+      <div className='container'>
+        <h1 className='heading'>
+          React Lifecycle Methods: componentWillUnmount
+        </h1>
+        <h1 className='intro'>Introduction</h1>
+        <p className='intro-para'>
+          Welcome to this demonstration of the componentWillUnmount lifecycle
+          method in React. This method is called just before a component is
+          removed from the DOM, making it the perfect place to clean up any
+          resources that won't be needed anymore, such as intervals or network
+          requests.
+        </p>
+        <h1 className='example'>
+          Example: Using setInterval and componentWillUnmount
+        </h1>
+        <p className='example-para'>
+          In this example, we'll create a simple React component that starts an
+          interval when it mounts and cleans it up when it unmounts. This
+          ensures that no memory leaks or unwanted background processes are left
+          running.
+        </p>
+        <h1>Timer Value : {this.state.timer} </h1>
+        <div className='btn'>
+          <Link to='/lifecycle'>
+            <h1>Click to go to Different page</h1>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export default Home;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## LifeCycle Component
 
-### `npm run eject`
+import React from 'react';
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const LifeCycle = () => {
+  return (
+    <div className='container'>
+      <h1 className='intro'>Inspect and open Console</h1>
+      <p className='intro-para'>
+        You'll notice that setInterval continues to be called, performing costly
+        operations. This happens because we haven't cleared the interval.
+      </p>
+      <h1 className='example'>
+        This is because we didn't clear the Interval - It should be done in
+        componentWillUnmount
+      </h1>
+      <p className='example'>
+        To prevent this, we need to clear the interval in the
+        componentWillUnmount method. Whenever we change the page,
+        componentWillUnmount is called, ensuring that resources are properly
+        cleaned up.
+      </p>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+      <p className='example'>Now, Try this -</p>
+      <p className='intro-para'>
+        Add <code>clearInterval(this.interval);</code> - in -
+        <code>componentWillUnmount</code>, and refresh the page. Open the
+        console and click on the lifecycle page. You will notice that the timer
+        has now stopped.
+      </p>
+      <p className='intro-para'>
+        This demonstrates the importance of optimization. If the interval is not
+        cleared, it will keep running. Imagine having 100 such timers; it would
+        significantly affect our app's performance.
+      </p>
+    </div>
+  );
+};
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+export default LifeCycle;
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Conclusion
+This demonstration highlights how to effectively use componentWillUnmount to clean up intervals in React components. Proper cleanup is crucial for maintaining performance and avoiding memory leaks in your applications. Feel free to play around with the code and see how it works!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
