@@ -1,11 +1,14 @@
 ### React Lifecycle Methods: componentWillUnmount Demonstration
 ## Overview
-## This web application demonstrates the importance and proper usage of the componentWillUnmount lifecycle method in React. It uses a simple timer example to show how to clean up resources such as intervals to prevent memory leaks and unwanted background processes.
+ This web application demonstrates the importance and proper usage of the componentWillUnmount lifecycle method in React. It uses a simple timer example to show how to clean up resources such as intervals to prevent memory leaks and unwanted background processes.
 
 ### Features
-## Initialization: Demonstrates how to start an interval in componentDidMount.
-## Cleanup: Shows how to properly clean up the interval in componentWillUnmount.
-## User Interaction: Allows users to navigate between pages to observe the effects of proper and improper cleanup.
+## Initialization:
+Demonstrates how to start an interval in componentDidMount.
+## Cleanup: 
+Shows how to properly clean up the interval in componentWillUnmount.
+## User Interaction: 
+Allows users to navigate between pages to observe the effects of proper and improper cleanup.
 ## How It Works
 ## Home Component
 The Home component starts an interval when it mounts and increments a timer every second. The interval is intended to be cleared in the componentWillUnmount method, but initially, this cleanup is commented out to demonstrate the consequences.
